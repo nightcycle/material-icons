@@ -50,6 +50,27 @@ SCALE_TO_SCALE: dict[str, Scale] = {
 	"4x": 4,
 }
 
+BAD_ICONS: list[str] = [
+	"smoke_free",
+	"smoking_rooms",
+	"vaping_rooms",
+	"vape_free",
+	"local_bar",
+	"liquor",
+	"wine_bar",
+	"nightlife",
+	"no_drinks",
+	"sports_bar",
+	"no_adult_content",
+	"explicit",
+	"sword_rose",
+	"pill",
+	"pill_off",
+	"prescriptions",
+	"pregnant_woman",
+	"pregnancy"
+]
+
 class IconMapEntry(TypedDict):
 	page: str
 	start_x: int
@@ -95,30 +116,31 @@ def organize_to_spritesheets() -> None:
 	
 	for category in os.listdir(PNG_PATH):
 		for icon_name in os.listdir(f"{PNG_PATH}/{category}"):
-			for icon_style in os.listdir(f"{PNG_PATH}/{category}/{icon_name}"):
-				style: Style = DIR_TO_STYLE[icon_style];
-				for icon_size in os.listdir(f"{PNG_PATH}/{category}/{icon_name}/{icon_style}"):
-					size: Size = DP_TO_SIZE[icon_size];
-					# if size <= 48:
-					for icon_scale in os.listdir(f"{PNG_PATH}/{category}/{icon_name}/{icon_style}/{icon_size}"):
-						scale: Scale = SCALE_TO_SCALE[icon_scale]
-						# if scale <= 1:
-						for file in os.listdir(f"{PNG_PATH}/{category}/{icon_name}/{icon_style}/{icon_size}/{icon_scale}"):
-							export_group = f"{style}_{size}_{scale}"
-							if not export_group in export_groups:
-								export_groups[export_group] = []
+			if not icon_name in BAD_ICONS:
+				for icon_style in os.listdir(f"{PNG_PATH}/{category}/{icon_name}"):
+					style: Style = DIR_TO_STYLE[icon_style];
+					for icon_size in os.listdir(f"{PNG_PATH}/{category}/{icon_name}/{icon_style}"):
+						size: Size = DP_TO_SIZE[icon_size];
+						# if size <= 48:
+						for icon_scale in os.listdir(f"{PNG_PATH}/{category}/{icon_name}/{icon_style}/{icon_size}"):
+							scale: Scale = SCALE_TO_SCALE[icon_scale]
+							# if scale <= 1:
+							for file in os.listdir(f"{PNG_PATH}/{category}/{icon_name}/{icon_style}/{icon_size}/{icon_scale}"):
+								export_group = f"{style}_{size}_{scale}"
+								if not export_group in export_groups:
+									export_groups[export_group] = []
 
-							export_groups[export_group].append({
-								"size": size,
-								"style": style,
-								"width": size * scale,
-								"index": len(export_groups[export_group])+1,
-								"scale": scale,
-								"name": icon_name,
-								"category": category,
-								"path": f"{PNG_PATH}/{category}/{icon_name}/{icon_style}/{icon_size}/{icon_scale}/{file}",
-								"export_group": export_group,
-							})
+								export_groups[export_group].append({
+									"size": size,
+									"style": style,
+									"width": size * scale,
+									"index": len(export_groups[export_group])+1,
+									"scale": scale,
+									"name": icon_name,
+									"category": category,
+									"path": f"{PNG_PATH}/{category}/{icon_name}/{icon_style}/{icon_size}/{icon_scale}/{file}",
+									"export_group": export_group,
+								})
 
 	icon_maps: dict[str, dict[str, IconMapEntry]] = {}
 	shutil.rmtree(OUT_DIR)
@@ -239,7 +261,15 @@ def upload_sheets() -> None:
 	for group in os.listdir(OUT_IMG_DIR):
 		for page in os.listdir(f"{OUT_IMG_DIR}/{group}"):
 			page_path = f"{OUT_IMG_DIR}/{group}/{page}"
-			asset_ids[page_path] = upload_image(page_path, page_path.replace(OUT_IMG_DIR+"/", "").replace(".png", "").replace("/", "_").lower().replace("page", "p"));
+
+			def try_forever():
+				try:
+					asset_ids[page_path] = upload_image(page_path, page_path.replace(OUT_IMG_DIR+"/", "").replace(".png", "").replace("/", "_").lower().replace("page", "p"));
+				except:
+					time.sleep(5)
+					try_forever()
+
+			try_forever()
 
 	with open(ASSET_ID_PATH, "w") as asset_file:
 		asset_file.write(json.dumps(asset_ids, indent=5))
