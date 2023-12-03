@@ -64,8 +64,8 @@ jobs:
       - name: generate sourcemap
         run: rojo sourcemap dev.project.json --output sourcemap.json
  
-      - name: export wally package types
-        run: wally-package-types --sourcemap sourcemap.json Packages
+     #  - name: export wally package types
+     #    run: wally-package-types --sourcemap sourcemap.json Packages
 
       - name: Install testing files
         shell: bash
