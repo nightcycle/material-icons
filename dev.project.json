@@ -1,15 +1,12 @@
 {
 	"name": "test",
 	"tree": {
-	  "$className": "DataModel",
-	  "ReplicatedStorage": {
-	    "$className": "ReplicatedStorage",
-	    "Packages": {
-		 "$path": "Packages",
-		 "package": {
-		   "$path": "src"
-		 }
-	    }
-	  }
+		"$className": "DataModel",
+		"ReplicatedStorage": {
+			"$className": "ReplicatedStorage",
+			"package": {
+				"$path": "src"
+			}
+		}
 	}
-   }
+}

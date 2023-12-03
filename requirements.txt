@@ -1,0 +1,11 @@
+certifi==2023.11.17
+charset-normalizer==3.3.2
+dpath==2.1.6
+idna==3.6
+luau==0.4.22
+Pillow==10.1.0
+pygit==0.1
+requests==2.28.2
+toml==0.10.2
+types-toml==0.10.8.7
+urllib3==1.26.18

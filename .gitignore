@@ -1,12 +1,13 @@
 
 
 # Directories
-out/**
 Packages/**
 types
 lints
 tests/lsp/**
 tests/selene/**
+icons/**
+out/**
 
 # Files
 sourcemap.json
@@ -20,4 +21,4 @@ keys.txt
 *.rbxl
 *.rbxlx
 *.lock
-
+scripts/auth.txt
