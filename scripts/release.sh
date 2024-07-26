@@ -52,7 +52,7 @@ for file in $src_dir/*; do
 		sed -i "s#name = \".*\"#name = \"$package_full_name\"#" wally.toml
 		
 		# in default.project.json, change the line that icludes '"$path":' and replaces it with '"$path": "$file"'
-		sed -i "s#\"\$path\": \".*\"#\"\$path\": \"$dist_file_path\"#" default.project.json
+		# sed -i "s#\"\$path\": \".*\"#\"\$path\": \"$dist_file_path\"#" default.project.json
 		wally publish
 	fi
 done
