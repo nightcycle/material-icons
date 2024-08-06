@@ -6,7 +6,7 @@ types
 lints
 tests/lsp/**
 tests/selene/**
-icons/**
+png/**
 out/**
 
 # Files

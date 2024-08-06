@@ -9,7 +9,7 @@ from luau.convert import mark_as_literal, from_dict
 import requests
 from PIL import Image, ImageOps
 
-PNG_PATH = "icons"
+PNG_PATH = "png"
 OUT_DIR = "out"
 OUT_IMG_DIR = f"{OUT_DIR}/asset"
 OUT_MAP_DIR = f"{OUT_DIR}/map"
